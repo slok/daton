@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/slok/baton",
+	"ImportPath": "github.com/slok/daton",
 	"GoVersion": "go1.4.2",
 	"Deps": [
 		{

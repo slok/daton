@@ -11,6 +11,6 @@ else
            --rm \
            -it \
            --name $CONTAINER_NAME \
-           -v $CURRENT_PATH/../../../:/go/src/github.com/slok/baton \
+           -v $CURRENT_PATH/../../../:/go/src/github.com/slok/daton \
            $IMAGE_NAME $@
 fi
