@@ -1,7 +1,6 @@
 package main_test
 
 import (
-	"io"
 	"testing"
 
 	. "gopkg.in/check.v1"
@@ -15,5 +14,5 @@ type MainSuite struct{}
 var _ = Suite(&MainSuite{})
 
 func (s *MainSuite) TestHelloWorld(c *C) {
-	c.Assert(42, Equals, "42")
+	c.Assert(42, Equals, 42)
 }
