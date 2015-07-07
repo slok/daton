@@ -9,32 +9,12 @@ For the dev environment we use Docker and Makefile
 
 ### Makefile commands
 
-build_docker:
-
     $ make build_docker
-
-cmd:
-
     $ make cmd ARGS="env"
-
-shell:
-
     $ make shell
-
-run:
-
     $ make run
-
-stop:
-
     $ make stop
-
-rm:
-
     $ make rm
-
-test:
-
     $ make test
 
 

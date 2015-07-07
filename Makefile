@@ -22,9 +22,3 @@ rm:
 
 test:
 	@./environment/dev/scripts/exec.sh go test
-
-#dep_save:
-#	@./environment/dev/scripts/exec.sh /bin/bash -c "go get -t; godep save"
-#
-#dep_restore:
-#	@./environment/dev/scripts/exec.sh godep restore
