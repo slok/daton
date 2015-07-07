@@ -1,0 +1,16 @@
+language: go
+
+go:
+  - 1.4
+  - tip
+
+env:
+  - GOARCH=amd64
+
+script:
+  - make test
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
