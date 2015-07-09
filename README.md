@@ -3,6 +3,8 @@ Daton
 =====
 
 [![Build Status](https://travis-ci.org/slok/daton.svg?branch=master)](https://travis-ci.org/slok/daton)
+[![Coverage Status](https://coveralls.io/repos/slok/daton/badge.svg?branch=master&service=github)](https://coveralls.io/github/slok/daton?branch=master)
+
 
 Dev environment
 ----------------
