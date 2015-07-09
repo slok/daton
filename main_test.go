@@ -7,7 +7,7 @@ import (
 )
 
 // Hook up gocheck into the "go test" runner.
-func Test(t *testing.T) { TestingT(t) }
+func TestMain(t *testing.T) { TestingT(t) }
 
 type MainSuite struct{}
 

@@ -10,7 +10,7 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-func Test(t *testing.T) { TestingT(t) }
+func TestConfigurationLoad(t *testing.T) { TestingT(t) }
 
 type ConfigTestSuite struct {
 	configName    string
@@ -51,4 +51,12 @@ func (s *ConfigTestSuite) TearDownSuite(c *C) {
 
 func (s *ConfigTestSuite) TestLoadFromFileExists(c *C) {
 	LoadSettingsFromFile()
+}
+
+func (s *ConfigTestSuite) TestLoadWithoutFiles(c *C) {
+	c.Skip("Not implemented")
+}
+
+func (s *ConfigTestSuite) TestLoadDefaults(c *C) {
+	c.Skip("Not implemented")
 }

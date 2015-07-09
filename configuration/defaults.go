@@ -13,7 +13,7 @@ var (
 	}
 
 	// Server configuration
-	Port       = 9001
+	Port       = 3000
 	ApiVersion = 1
 
 	// Database configuration
