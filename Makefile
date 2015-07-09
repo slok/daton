@@ -21,4 +21,4 @@ rm:
 	@./environment/dev/scripts/rm.sh
 
 test:
-	@./environment/dev/scripts/exec.sh go test
+	@./environment/dev/scripts/exec.sh go test ./...
