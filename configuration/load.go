@@ -17,11 +17,24 @@ func LoadSettingsFromFile() {
 	viper.SetConfigType(ConfigType)
 	setConfigLocation()
 
+	// Set defaults
+	viper.SetDefault("Port", Port)
+	viper.SetDefault("EnableAutomerge", EnableAutomerge)
+	viper.SetDefault("Debug", Debug)
+
 	// Load configuration
 	err := viper.ReadInConfig()
 	if err != nil {
-		errorMessage := fmt.Sprintf("Cant load config file: %s", err)
-		log.Fatal(errorMessage)
+		errorMessage := fmt.Sprintf("Configuration not found, loading defaults")
+		log.Warning(errorMessage)
 	}
+
+	// set log level
+	if viper.GetBool("Debug") {
+		log.SetLevel(log.DebugLevel)
+	} else {
+		log.SetLevel(log.InfoLevel)
+	}
+
 	log.Info("Settings loaded")
 }

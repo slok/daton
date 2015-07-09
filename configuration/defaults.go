@@ -13,11 +13,13 @@ var (
 	}
 
 	// Server configuration
-	Port = 9001
+	Port       = 9001
+	ApiVersion = 1
 
 	// Database configuration
 	VoltdbName = ""
 
 	// App configuration
 	EnableAutomerge = false
+	Debug           = true
 )
