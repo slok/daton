@@ -1,7 +1,6 @@
 package configuration
 
 import (
-	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/viper"
 )
@@ -25,8 +24,7 @@ func LoadSettingsFromFile() {
 	// Load configuration
 	err := viper.ReadInConfig()
 	if err != nil {
-		errorMessage := fmt.Sprintf("Configuration not found, loading defaults")
-		log.Warning(errorMessage)
+		log.Warning("Configuration not found, loading defaults")
 	}
 
 	// set log level

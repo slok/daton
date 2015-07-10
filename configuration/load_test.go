@@ -20,7 +20,7 @@ type ConfigTestSuite struct {
 
 var _ = Suite(&ConfigTestSuite{})
 
-func (s *ConfigTestSuite) SetUpSuite(c *C) {
+func (s *ConfigTestSuite) SetUpTest(c *C) {
 	// Create the config file
 	s.configName = "daton.json"
 	s.configAbsPath = "/tmp/datontest"
@@ -41,7 +41,7 @@ func (s *ConfigTestSuite) SetUpSuite(c *C) {
 	}
 }
 
-func (s *ConfigTestSuite) TearDownSuite(c *C) {
+func (s *ConfigTestSuite) TearDownTest(c *C) {
 	// Delete the config file
 	err := os.RemoveAll(s.configAbsPath)
 	if err != nil {
@@ -53,10 +53,23 @@ func (s *ConfigTestSuite) TestLoadFromFileExists(c *C) {
 	LoadSettingsFromFile()
 }
 
-func (s *ConfigTestSuite) TestLoadWithoutFiles(c *C) {
-	c.Skip("Not implemented")
+func (s *ConfigTestSuite) TestLoadWithoutFile(c *C) {
+	// delete the file
+	err := os.RemoveAll(s.configAbsPath)
+	if err != nil {
+		panic(err)
+	}
+	LoadSettingsFromFile()
 }
 
 func (s *ConfigTestSuite) TestLoadDefaults(c *C) {
-	c.Skip("Not implemented")
+	// delete the file
+	err := os.RemoveAll(s.configAbsPath)
+	if err != nil {
+		panic(err)
+	}
+	LoadSettingsFromFile()
+	c.Assert(viper.GetInt("Port"), Equals, Port)
+	c.Assert(viper.GetBool("EnableAutomerge"), Equals, EnableAutomerge)
+	c.Assert(viper.GetBool("Debug"), Equals, Debug)
 }
