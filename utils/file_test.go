@@ -28,6 +28,15 @@ func (s *FileUtilsTestSuite) TearDownTest(c *C) {
 	}
 }
 
+func (s *FileUtilsTestSuite) TestWriteStringFails(c *C) {
+	data := []byte("This is a test")
+	err := WriteStringFile(data, "/doesnt/exists")
+
+	if err == nil {
+		c.Error("Writting should fail because of unexistent path")
+	}
+}
+
 func (s *FileUtilsTestSuite) TestWriteStringFile(c *C) {
 	data := []byte("This is a test")
 	err := WriteStringFile(data, s.filePath)
@@ -43,6 +52,17 @@ func (s *FileUtilsTestSuite) TestWriteStringFile(c *C) {
 	}
 
 	c.Assert(string(dataAfter), Equals, string(data))
+}
+
+func (s *FileUtilsTestSuite) TestWriteJsonFails(c *C) {
+	data := map[int]string{
+		1: "Json format doens't admit map keys that are not an string",
+	}
+	err := WriteJsonFile(data, s.filePath)
+
+	if err == nil {
+		c.Error("Json parsing should fail, invalid json object")
+	}
 }
 
 func (s *FileUtilsTestSuite) TestWriteJsonFile(c *C) {
