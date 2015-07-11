@@ -47,15 +47,15 @@ func (s *FileUtilsTestSuite) TestWriteStringFile(c *C) {
 
 func (s *FileUtilsTestSuite) TestWriteJsonFile(c *C) {
 	type JsonTest struct {
-		attr1 string   `json:"attr1,omitempty"`
-		attr2 int      `json:"attr2,omitempty"`
-		attr3 []string `json:"attr3,omitempty"`
+		Attr1 string   `json:"attr1,omitempty"`
+		Attr2 int      `json:"attr2,omitempty"`
+		Attr3 []string `json:"attr3,omitempty"`
 	}
 
 	jt := JsonTest{
-		attr1: "this is a test",
-		attr2: 923123123,
-		attr3: []string{"a", "b", "c", "d"},
+		Attr1: "this is a test",
+		Attr2: 923123123,
+		Attr3: []string{"a", "b", "c", "d"},
 	}
 
 	err := WriteJsonFile(jt, s.filePath)

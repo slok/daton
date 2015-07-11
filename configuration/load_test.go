@@ -1,75 +1,68 @@
 package configuration
 
 import (
-	"io/ioutil"
 	"os"
 	"path"
 	"testing"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/viper"
 	. "gopkg.in/check.v1"
+
+	"github.com/slok/daton/utils"
 )
 
 func TestConfigurationLoad(t *testing.T) { TestingT(t) }
 
 type ConfigTestSuite struct {
-	configName    string
-	configPath    string
-	configAbsPath string
+	configPath string
 }
 
 var _ = Suite(&ConfigTestSuite{})
 
 func (s *ConfigTestSuite) SetUpTest(c *C) {
-	// Create the config file
-	s.configName = "daton.json"
-	s.configAbsPath = "/tmp/datontest"
-	s.configPath = path.Join(s.configAbsPath, s.configName)
+	viper.Reset()
+	// prepare config file
+	s.configPath = "/tmp/daton-test/daton.json"
+	viper.AddConfigPath(path.Dir(s.configPath))
 
-	err := os.Mkdir(s.configAbsPath, 0744)
-	if err != nil {
-		panic(err)
-	}
-
-	// set config location to viper
-	viper.AddConfigPath(s.configAbsPath)
-
-	configData := []byte("{}")
-	err = ioutil.WriteFile(s.configPath, configData, 0644)
-	if err != nil {
-		panic(err)
-	}
 }
 
 func (s *ConfigTestSuite) TearDownTest(c *C) {
-	// Delete the config file
-	err := os.RemoveAll(s.configAbsPath)
+	// Delete the config file (if present)
+	err := os.RemoveAll(path.Dir(s.configPath))
 	if err != nil {
 		panic(err)
 	}
 }
 
 func (s *ConfigTestSuite) TestLoadFromFileExists(c *C) {
+	utils.WriteStringFile([]byte("{}"), s.configPath)
 	LoadSettingsFromFile()
 }
 
 func (s *ConfigTestSuite) TestLoadWithoutFile(c *C) {
-	// delete the file
-	err := os.RemoveAll(s.configAbsPath)
-	if err != nil {
-		panic(err)
-	}
 	LoadSettingsFromFile()
 }
 
 func (s *ConfigTestSuite) TestLoadDefaults(c *C) {
-	// delete the file
-	err := os.RemoveAll(s.configAbsPath)
-	if err != nil {
-		panic(err)
-	}
 	LoadSettingsFromFile()
+
 	c.Assert(viper.GetInt("Port"), Equals, Port)
 	c.Assert(viper.GetBool("EnableAutomerge"), Equals, EnableAutomerge)
 	c.Assert(viper.GetBool("Debug"), Equals, Debug)
+}
+
+func (s *ConfigTestSuite) TestDebugMode(c *C) {
+	type AnonConfig struct {
+		Debug bool `json:"Debug"`
+	}
+	utils.WriteJsonFile(AnonConfig{Debug: true}, s.configPath)
+	LoadSettingsFromFile()
+	c.Assert(log.GetLevel(), Equals, log.DebugLevel)
+
+	utils.WriteJsonFile(AnonConfig{Debug: false}, s.configPath)
+	// Not need to reset because the conf file exists and loading it will overwrite
+	LoadSettingsFromFile()
+	c.Assert(log.GetLevel(), Equals, log.InfoLevel)
 }
