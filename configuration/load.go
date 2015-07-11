@@ -34,5 +34,6 @@ func LoadSettingsFromFile() {
 		log.SetLevel(log.InfoLevel)
 	}
 
+	log.Debugf("Loaded setting values: %v", viper.AllSettings())
 	log.Info("Settings loaded")
 }
