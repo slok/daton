@@ -20,6 +20,8 @@ func LoadSettingsFromFile() {
 	viper.SetDefault("Port", Port)
 	viper.SetDefault("EnableAutomerge", EnableAutomerge)
 	viper.SetDefault("Debug", Debug)
+	viper.SetDefault("DefaultEnvironment", DefaultEnvironment)
+	viper.SetDefault("DefaultTask", DefaultTask)
 
 	// Load configuration
 	err := viper.ReadInConfig()

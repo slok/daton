@@ -22,4 +22,8 @@ var (
 	// App configuration
 	EnableAutomerge = false
 	Debug           = true
+
+	// Deploy configuration
+	DefaultEnvironment = "production"
+	DefaultTask        = "deploy"
 )
