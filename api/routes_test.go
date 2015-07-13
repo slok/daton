@@ -56,6 +56,6 @@ func (s *ApiRoutesTestSuite) TestApiGetBind(c *C) {
 	c.Assert(s.response.Code, Equals, http.StatusOK)
 	body := s.response.Body.String()
 
-	c.Assert(strings.HasPrefix(body, "{\"status\": \"ok\", \"timestamp\":"),
+	c.Assert(strings.HasPrefix(body, `{"status":"ok","timestamp":`),
 		Equals, true)
 }
