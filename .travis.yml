@@ -17,6 +17,7 @@ script:
   - go test -coverprofile=configuration.coverprofile ./configuration
   - go test -coverprofile=api.coverprofile ./api
   - go test -coverprofile=utils.coverprofile ./utils
+  - go test -coverprofile=utils.coverprofile ./data
   - go test -coverprofile=main.coverprofile
   - $HOME/gopath/bin/gover
   - $HOME/gopath/bin/goveralls -coverprofile=gover.coverprofile -service travis-ci
