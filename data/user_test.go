@@ -15,7 +15,7 @@ type DataUserSuite struct {
 
 var _ = Suite(&DataUserSuite{})
 
-func (s *DataUserSuite) TestUserTest(c *C) {
+func (s *DataUserSuite) TestUserModel(c *C) {
 	u := User{
 		Login: "slok",
 		Id:    1,

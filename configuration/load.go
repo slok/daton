@@ -22,6 +22,7 @@ func LoadSettingsFromFile() {
 	viper.SetDefault("Debug", Debug)
 	viper.SetDefault("DefaultEnvironment", DefaultEnvironment)
 	viper.SetDefault("DefaultTask", DefaultTask)
+	viper.SetDefault("BoltdbName", BoltdbName)
 
 	// Load configuration
 	err := viper.ReadInConfig()

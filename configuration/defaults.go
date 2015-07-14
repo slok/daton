@@ -17,7 +17,7 @@ var (
 	ApiVersion = 1
 
 	// Database configuration
-	VoltdbName = ""
+	BoltdbName = "./data.db"
 
 	// App configuration
 	EnableAutomerge = false

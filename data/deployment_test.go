@@ -16,7 +16,7 @@ type DataDeploymentSuite struct {
 
 var _ = Suite(&DataDeploymentSuite{})
 
-func (s *DataDeploymentSuite) TestDeploymentTest(c *C) {
+func (s *DataDeploymentSuite) testDeploymentModel(c *C) {
 
 	t, _ := time.Parse(time.RFC3339Nano, "2015-07-12T12:47:20.059465681Z")
 
@@ -52,7 +52,7 @@ func (s *DataDeploymentSuite) TestDeploymentTest(c *C) {
 	c.Assert(string(j), Equals, jsonOk)
 }
 
-func (s *DataDeploymentSuite) TestStatusTest(c *C) {
+func (s *DataDeploymentSuite) testStatusModel(c *C) {
 
 	t, _ := time.Parse(time.RFC3339Nano, "2015-07-12T12:47:20.059465681Z")
 

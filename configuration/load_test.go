@@ -25,7 +25,6 @@ func (s *ConfigTestSuite) SetUpTest(c *C) {
 	// prepare config file
 	s.configPath = "/tmp/daton-test/daton.json"
 	viper.AddConfigPath(path.Dir(s.configPath))
-
 }
 
 func (s *ConfigTestSuite) TearDownTest(c *C) {
