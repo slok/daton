@@ -9,6 +9,7 @@ import (
 
 	"github.com/slok/daton/api"
 	"github.com/slok/daton/configuration"
+	"github.com/slok/daton/data"
 )
 
 func main() {
@@ -16,6 +17,13 @@ func main() {
 
 	// Load configuration
 	configuration.LoadSettingsFromFile()
+
+	// Init database
+	db, err := data.GetBoltDb()
+	defer db.Disconnect()
+	if err != nil {
+		log.Panic("Couldn't connect to bolt database")
+	}
 
 	// Bind routing with handlers
 	router := api.BindApiRoutes(nil)
