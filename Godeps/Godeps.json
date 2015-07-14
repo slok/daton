@@ -13,6 +13,11 @@
 			"Rev": "07d998d174c4e2dc90e2f1989a20724220bca1ff"
 		},
 		{
+			"ImportPath": "github.com/boltdb/bolt",
+			"Comment": "v1.0-111-g04a3e85",
+			"Rev": "04a3e85793043e76d41164037d0d7f9d53eecae3"
+		},
+		{
 			"ImportPath": "github.com/codegangsta/negroni",
 			"Comment": "v0.1-70-gc7477ad",
 			"Rev": "c7477ad8e330bef55bf1ebe300cf8aa67c492d1b"
