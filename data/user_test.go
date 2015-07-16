@@ -2,13 +2,9 @@ package data
 
 import (
 	"encoding/json"
-	"testing"
 
 	. "gopkg.in/check.v1"
 )
-
-// Hook up gocheck into the "go test" runner.
-func TestDataUser(t *testing.T) { TestingT(t) }
 
 type DataUserSuite struct {
 }

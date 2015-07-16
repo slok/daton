@@ -9,14 +9,14 @@ import (
 )
 
 // Hook up gocheck into the "go test" runner.
-func TestDataDeployment(t *testing.T) { TestingT(t) }
+func TestData(t *testing.T) { TestingT(t) }
 
 type DataDeploymentSuite struct {
 }
 
 var _ = Suite(&DataDeploymentSuite{})
 
-func (s *DataDeploymentSuite) testDeploymentModel(c *C) {
+func (s *DataDeploymentSuite) TestDeploymentModel(c *C) {
 
 	t, _ := time.Parse(time.RFC3339Nano, "2015-07-12T12:47:20.059465681Z")
 
@@ -41,6 +41,7 @@ func (s *DataDeploymentSuite) testDeploymentModel(c *C) {
 		StatusesUrl:   "http://test.com/repos/slok/daton/deployments/1/statuses",
 		RepositoryUrl: "http://test.com/repos/slok/daton",
 		StatusId:      1,
+		Namespace:     "slok/daton",
 	}
 
 	jsonOk := `{"url":"http://test.com/repos/slok/daton/deployments/1","id":1,"sha":"d583d658d6da0b2f95ab3bcd27cd7d4bd93c3fc0","ref":"master","task":"deploy","payload":{"room_id":123456,"user":"slok"},"environment":"production","description":"Deploy request from hubot","creator":{"login":"slok","id":1},"created_at":"2015-07-12T12:47:20.059465681Z","updated_at":"2015-07-12T12:47:20.059465681Z","statuses_url":"http://test.com/repos/slok/daton/deployments/1/statuses","repository_url":"http://test.com/repos/slok/daton","status_id":1}`
@@ -52,7 +53,7 @@ func (s *DataDeploymentSuite) testDeploymentModel(c *C) {
 	c.Assert(string(j), Equals, jsonOk)
 }
 
-func (s *DataDeploymentSuite) testStatusModel(c *C) {
+func (s *DataDeploymentSuite) TestStatusModel(c *C) {
 
 	t, _ := time.Parse(time.RFC3339Nano, "2015-07-12T12:47:20.059465681Z")
 
@@ -71,6 +72,7 @@ func (s *DataDeploymentSuite) testStatusModel(c *C) {
 		DeploymentUrl: "http://test.com/repos/slok/daton/deployments/1",
 		RepositoryUrl: "http://test.com/repos/slok/daton",
 		DeploymentId:  1,
+		Namespace:     "slok/daton",
 	}
 
 	jsonOk := `{"url":"http://test.com/repos/slok/daton/deployments/1/statuses","id":1,"state":"success","creator":{"login":"slok","id":1},"description":"Deployment finished successfully.","target_url":"https://test.com/deployment/1/output","created_at":"2015-07-12T12:47:20.059465681Z","updated_at":"2015-07-12T12:47:20.059465681Z","deployment_url":"http://test.com/repos/slok/daton/deployments/1","repository_url":"http://test.com/repos/slok/daton","deploy_id":1}`

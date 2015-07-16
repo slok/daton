@@ -14,7 +14,8 @@ import (
 	"github.com/slok/daton/configuration"
 )
 
-func TestApiRoutes(t *testing.T) { TestingT(t) }
+// Hook up gocheck into the "go test" runner.
+func TestApi(t *testing.T) { TestingT(t) }
 
 type ApiRoutesTestSuite struct {
 	apiPrefix string

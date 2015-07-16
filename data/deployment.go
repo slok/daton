@@ -28,6 +28,7 @@ type Deployment struct {
 	StatusesUrl   string      `json:"statuses_url"`
 	RepositoryUrl string      `json:"repository_url"`
 	StatusId      int         `json:"status_id"`
+	Namespace     string      `json:"-"`
 }
 
 // Status represents the current status of a deployment
@@ -43,4 +44,5 @@ type Status struct {
 	DeploymentUrl string    `json:"deployment_url"`
 	RepositoryUrl string    `json:"repository_url"`
 	DeploymentId  int       `json:"deploy_id"`
+	Namespace     string    `json:"-"`
 }

@@ -1,15 +1,10 @@
 package data
 
 import (
-	"testing"
-
 	. "gopkg.in/check.v1"
 
 	"github.com/slok/daton/configuration"
 )
-
-// Hook up gocheck into the "go test" runner.
-func TestBoltDb(t *testing.T) { TestingT(t) }
 
 type BoltDbSuite struct {
 }

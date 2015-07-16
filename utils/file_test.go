@@ -9,7 +9,7 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-func TestFileUtils(t *testing.T) { TestingT(t) }
+func TestUtils(t *testing.T) { TestingT(t) }
 
 type FileUtilsTestSuite struct {
 	filePath string

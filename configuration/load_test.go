@@ -3,6 +3,7 @@ package configuration
 import (
 	"os"
 	"path"
+
 	"testing"
 
 	log "github.com/Sirupsen/logrus"
@@ -12,7 +13,8 @@ import (
 	"github.com/slok/daton/utils"
 )
 
-func TestConfigurationLoad(t *testing.T) { TestingT(t) }
+// Hook up gocheck into the "go test" runner.
+func TestConfiguration(t *testing.T) { TestingT(t) }
 
 type ConfigTestSuite struct {
 	configPath string
