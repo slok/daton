@@ -2,10 +2,15 @@ package data
 
 import (
 	"encoding/json"
+	"os"
 	"testing"
 	"time"
 
+	"github.com/boltdb/bolt"
+	"github.com/spf13/viper"
 	. "gopkg.in/check.v1"
+
+	"github.com/slok/daton/configuration"
 )
 
 // Hook up gocheck into the "go test" runner.
@@ -82,4 +87,88 @@ func (s *DataDeploymentSuite) TestStatusModel(c *C) {
 	}
 
 	c.Assert(string(j), Equals, jsonOk)
+}
+
+//-------------------------
+
+type DatabaseModelDeploymentSuite struct {
+	deployments []*Deployment
+	db          *BoltDb
+}
+
+var _ = Suite(&DatabaseModelDeploymentSuite{})
+
+func (s *DatabaseModelDeploymentSuite) SetUpSuite(c *C) {
+	configuration.LoadSettingsFromFile()
+	viper.Set("BoltdbName", "/tmp/datontest.db")
+}
+
+func (s *DatabaseModelDeploymentSuite) SetUpTest(c *C) {
+	// Set test instances
+	s.deployments = []*Deployment{
+		&Deployment{
+			Sha:         "d583d658d6da0b2f95ab3bcd27cd7d4bd93c3fc0",
+			Ref:         "master",
+			Task:        "deploy",
+			Environment: "production",
+			Payload: map[string]interface{}{
+				"user":    "slok",
+				"room_id": 123456,
+			},
+			Namespace: "slok/daton",
+		}, &Deployment{
+			Sha:         "980670afcebfd86727505b3061d8667195234816",
+			Ref:         "fix-#4213",
+			Task:        "deploy",
+			Environment: "preproduction",
+			Payload: map[string]interface{}{
+				"user":    "slok",
+				"room_id": 123456,
+			},
+			Namespace: "slok/daton",
+		},
+	}
+
+	// Set database
+	s.db, _ = GetBoltDb()
+
+}
+
+func (s *DatabaseModelDeploymentSuite) TearDownTest(c *C) {
+	// Delete the config file (if present)
+	s.db.Disconnect()
+	err := os.RemoveAll(viper.GetString("BoltdbName"))
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (s *DatabaseModelDeploymentSuite) TestDeploymentSave(c *C) {
+	for _, i := range s.deployments {
+		i.Save()
+	}
+
+	// retrieve the deployments
+	db.Conn.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("deployments"))
+		c.Assert(10, Equals, b.Stats().KeyN)
+		// 10 = 2(deploy data) + 1(production) + 1(preproduction) + 1(master) + 1(fix-#4213) + 1(deploy) + 1(d583d658d6da0b2f95ab3bcd27cd7d4bd93c3fc0) + 1(980670afcebfd86727505b3061d8667195234816) + 1 (counter)
+		c.Assert("[1]", Equals, string(b.Get([]byte("slok/daton:query:d583d658d6da0b2f95ab3bcd27cd7d4bd93c3fc0"))))
+		c.Assert("[2]", Equals, string(b.Get([]byte("slok/daton:query:980670afcebfd86727505b3061d8667195234816"))))
+
+		c.Assert("[1]", Equals, string(b.Get([]byte("slok/daton:query:master"))))
+		c.Assert("[2]", Equals, string(b.Get([]byte("slok/daton:query:fix-#4213"))))
+
+		c.Assert("[1,2]", Equals, string(b.Get([]byte("slok/daton:query:deploy"))))
+
+		c.Assert("[1]", Equals, string(b.Get([]byte("slok/daton:query:production"))))
+		c.Assert("[2]", Equals, string(b.Get([]byte("slok/daton:query:preproduction"))))
+
+		d1, _ := json.Marshal(s.deployments[0])
+		d2, _ := json.Marshal(s.deployments[1])
+		c.Assert(string(d1), Equals, string(b.Get([]byte("slok/daton:data:1"))))
+		c.Assert(string(d2), Equals, string(b.Get([]byte("slok/daton:data:2"))))
+
+		return nil
+	})
 }
