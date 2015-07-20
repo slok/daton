@@ -1,6 +1,7 @@
 package data
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"strconv"
@@ -18,9 +19,10 @@ const (
 	StatusFailure = "failure"
 
 	//    ------------- Key formats ----------------
-	DeployBucketDbKey    = "deployments"
-	DeployCounterKeyFmt  = "%s:counter"
-	DeployObjectDbKeyFmt = "%s:data:%d"
+	DeployBucketDbKey        = "deployments"
+	DeployCounterKeyFmt      = "%s:counter"
+	DeployObjectDbKeyFmt     = "%s:data:%d"
+	DeployObjectListDbKeyFmt = "%s:data:"
 	// This key will contain the deployment json body
 	// examples:
 	//	- {NAMESPACE}:data:{INCREMENTAL DEPLOY ID}
@@ -147,6 +149,41 @@ func (d *Deployment) Save() error {
 
 	return nil
 }
+
+func ListDeploymentsAsJson(namespace string) ([][]byte, error) {
+	d := [][]byte{}
+
+	err := db.Conn.View(func(tx *bolt.Tx) error {
+		c := tx.Bucket([]byte(DeployBucketDbKey)).Cursor()
+
+		prefix := []byte(fmt.Sprintf(DeployObjectListDbKeyFmt, namespace))
+
+		for k, v := c.Seek(prefix); bytes.HasPrefix(k, prefix); k, v = c.Next() {
+			d = append(d, v)
+		}
+		return nil
+	})
+
+	log.WithFields(log.Fields{
+		"namespace": namespace,
+		"length":    len(d),
+		"type":      "json",
+	}).Debug("Deployments retrieved from database")
+	return d, err
+}
+
+//func ListDeployments() ([]Deployment, error) {
+//	d := []Deployment{}
+//
+//	err := db.Conn.View(func(tx *bolt.Tx) error {
+//		bucket, err := tx.Bucket([]byte(DeployBucketDbKey))
+//		if err != nil {
+//			return err
+//		}
+//
+//	})
+//	return d, err
+//}
 
 // Status represents the current status of a deployment
 type Status struct {

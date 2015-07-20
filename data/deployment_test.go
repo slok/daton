@@ -172,3 +172,32 @@ func (s *DatabaseModelDeploymentSuite) TestDeploymentSave(c *C) {
 		return nil
 	})
 }
+
+func (s *DatabaseModelDeploymentSuite) TestDeploymentListAsJson(c *C) {
+	for _, i := range s.deployments {
+		i.Save()
+	}
+	ds, _ := ListDeploymentsAsJson(s.deployments[0].Namespace)
+
+	c.Assert(len(ds), Equals, len(s.deployments))
+
+	dj1 := Deployment{}
+	dj2 := Deployment{}
+	json.Unmarshal(ds[0], &dj1)
+	json.Unmarshal(ds[1], &dj2)
+
+	c.Assert(dj1.Id, Equals, int64(1))
+	c.Assert(dj2.Id, Equals, int64(2))
+
+	c.Assert(dj1.Sha, Equals, "d583d658d6da0b2f95ab3bcd27cd7d4bd93c3fc0")
+	c.Assert(dj2.Sha, Equals, "980670afcebfd86727505b3061d8667195234816")
+
+	c.Assert(dj1.Ref, Equals, "master")
+	c.Assert(dj2.Ref, Equals, "fix-#4213")
+
+	c.Assert(dj1.Environment, Equals, "production")
+	c.Assert(dj2.Environment, Equals, "preproduction")
+
+	c.Assert(dj1.Task, Equals, "deploy")
+	c.Assert(dj2.Task, Equals, "deploy")
+}
