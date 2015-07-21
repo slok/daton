@@ -172,18 +172,22 @@ func ListDeploymentsAsJson(namespace string) ([][]byte, error) {
 	return d, err
 }
 
-//func ListDeployments() ([]Deployment, error) {
-//	d := []Deployment{}
-//
-//	err := db.Conn.View(func(tx *bolt.Tx) error {
-//		bucket, err := tx.Bucket([]byte(DeployBucketDbKey))
-//		if err != nil {
-//			return err
-//		}
-//
-//	})
-//	return d, err
-//}
+func ListDeployments(namespace string) ([]Deployment, error) {
+	dJson, err := ListDeploymentsAsJson(namespace)
+	if err != nil {
+		return nil, err
+	}
+	ds := []Deployment{}
+	for _, i := range dJson {
+		d := &Deployment{}
+		err := json.Unmarshal(i, d)
+		if err != nil {
+			return nil, err
+		}
+		ds = append(ds, *d)
+	}
+	return ds, err
+}
 
 // Status represents the current status of a deployment
 type Status struct {

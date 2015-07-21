@@ -201,3 +201,27 @@ func (s *DatabaseModelDeploymentSuite) TestDeploymentListAsJson(c *C) {
 	c.Assert(dj1.Task, Equals, "deploy")
 	c.Assert(dj2.Task, Equals, "deploy")
 }
+
+func (s *DatabaseModelDeploymentSuite) TestDeploymentList(c *C) {
+	for _, i := range s.deployments {
+		i.Save()
+	}
+	ds, _ := ListDeployments(s.deployments[0].Namespace)
+
+	c.Assert(len(ds), Equals, len(s.deployments))
+
+	c.Assert(ds[0].Id, Equals, int64(1))
+	c.Assert(ds[1].Id, Equals, int64(2))
+
+	c.Assert(ds[0].Sha, Equals, "d583d658d6da0b2f95ab3bcd27cd7d4bd93c3fc0")
+	c.Assert(ds[1].Sha, Equals, "980670afcebfd86727505b3061d8667195234816")
+
+	c.Assert(ds[0].Ref, Equals, "master")
+	c.Assert(ds[1].Ref, Equals, "fix-#4213")
+
+	c.Assert(ds[0].Environment, Equals, "production")
+	c.Assert(ds[1].Environment, Equals, "preproduction")
+
+	c.Assert(ds[0].Task, Equals, "deploy")
+	c.Assert(ds[1].Task, Equals, "deploy")
+}
