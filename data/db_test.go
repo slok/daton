@@ -3,16 +3,24 @@ package data
 import (
 	. "gopkg.in/check.v1"
 
+	"github.com/spf13/viper"
+
 	"github.com/slok/daton/configuration"
 )
 
 type BoltDbSuite struct {
+	db *BoltDb
 }
 
 var _ = Suite(&BoltDbSuite{})
 
 func (s *BoltDbSuite) SetUpSuite(c *C) {
 	configuration.LoadSettingsFromFile()
+	viper.Set("BoltdbName", "/tmp/datontest.db")
+}
+
+func (s *BoltDbSuite) TearDownTest(c *C) {
+	s.db.Disconnect()
 }
 
 func (s *BoltDbSuite) TestDbConnect(c *C) {

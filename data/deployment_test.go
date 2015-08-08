@@ -135,8 +135,9 @@ func (s *DatabaseModelDeploymentSuite) SetUpTest(c *C) {
 }
 
 func (s *DatabaseModelDeploymentSuite) TearDownTest(c *C) {
-	// Delete the config file (if present)
 	s.db.Disconnect()
+
+	// Delete the database (if present)
 	err := os.RemoveAll(viper.GetString("BoltdbName"))
 	if err != nil {
 		panic(err)
@@ -149,7 +150,7 @@ func (s *DatabaseModelDeploymentSuite) TestDeploymentSave(c *C) {
 	}
 
 	// retrieve the deployments
-	db.Conn.View(func(tx *bolt.Tx) error {
+	s.db.Conn.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte("deployments"))
 		c.Assert(10, Equals, b.Stats().KeyN)
 		// 10 = 2(deploy data) + 1(production) + 1(preproduction) + 1(master) + 1(fix-#4213) + 1(deploy) + 1(d583d658d6da0b2f95ab3bcd27cd7d4bd93c3fc0) + 1(980670afcebfd86727505b3061d8667195234816) + 1 (counter)
@@ -168,7 +169,6 @@ func (s *DatabaseModelDeploymentSuite) TestDeploymentSave(c *C) {
 		d2, _ := json.Marshal(s.deployments[1])
 		c.Assert(string(d1), Equals, string(b.Get([]byte("slok/daton:data:1"))))
 		c.Assert(string(d2), Equals, string(b.Get([]byte("slok/daton:data:2"))))
-
 		return nil
 	})
 }

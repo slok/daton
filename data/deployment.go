@@ -11,36 +11,12 @@ import (
 	"github.com/boltdb/bolt"
 )
 
-// Deploy status constants
 const (
+	// Deploy status constants
 	StatusPending = "pending"
 	StatusSuccess = "success"
 	StatusError   = "error"
 	StatusFailure = "failure"
-
-	//    ------------- Key formats ----------------
-	DeployBucketDbKey        = "deployments"
-	DeployCounterKeyFmt      = "%s:counter"
-	DeployObjectDbKeyFmt     = "%s:data:%d"
-	DeployObjectListDbKeyFmt = "%s:data:"
-	// This key will contain the deployment json body
-	// examples:
-	//	- {NAMESPACE}:data:{INCREMENTAL DEPLOY ID}
-	//  - slok/daton:data:1
-	//  - slok/daton:data:98
-	//	- docker/docker:data:4
-	DeployQueryDbKeyFmt = "%s:query:%s"
-	// This key will contain a list with deploy keys
-	// examples:
-	//	- {NAMESPACE}:query:{REF/SHA/ENV}
-	//
-	//  - byEnv:	slok/daton:query:production
-	//			  	slok/daton:query:staging
-	//	- byTask:	slok/daton:query:deploy
-	//				slok/daton:query:migrate
-	//	- byRef:	slok/daton:query:master
-	//				slok/daton:query:tagv1
-	//				slok/daton:query:aa271b21ae983e8dc188a111699c368888a2fed7
 )
 
 // Deploy represents a deployment
