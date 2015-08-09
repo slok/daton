@@ -89,7 +89,7 @@ func (s *DataDeploymentSuite) TestStatusModel(c *C) {
 	c.Assert(string(j), Equals, jsonOk)
 }
 
-//-------------------------
+//-----------------------------------------------------------------------------
 
 type DatabaseModelDeploymentSuite struct {
 	deployments []*Deployment

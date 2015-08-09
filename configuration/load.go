@@ -5,6 +5,16 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Configuration keys
+// 		- BoltdbName
+// 		- Debug
+// 		- DefaultEnvironment
+// 		- DefaultTask
+// 		- EnableAutomerge
+// 		- Port
+// 		- AppHost
+//--------------------------------
+
 func setConfigLocation() {
 	viper.SetConfigName(ConfigName)
 	for _, i := range ConfigPaths {

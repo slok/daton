@@ -1,9 +1,8 @@
 package data
 
 import (
-	. "gopkg.in/check.v1"
-
 	"github.com/spf13/viper"
+	. "gopkg.in/check.v1"
 
 	"github.com/slok/daton/configuration"
 )

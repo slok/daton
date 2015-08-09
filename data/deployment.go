@@ -9,6 +9,9 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/boltdb/bolt"
+
+	"github.com/slok/daton/configuration"
+	"github.com/slok/daton/utils"
 )
 
 const (
@@ -39,6 +42,17 @@ type Deployment struct {
 }
 
 func (d *Deployment) Save() error {
+	// Set defaults
+	if len(d.Task) <= 0 {
+		d.Task = configuration.DefaultTask
+	}
+	if len(d.Environment) <= 0 {
+		d.Environment = configuration.DefaultEnvironment
+	}
+	if d.Payload == nil {
+		d.Payload = ""
+	}
+
 	// Generate the keys to insert the object id
 	objectQueryKeys := []string{
 		fmt.Sprintf(DeployQueryDbKeyFmt, d.Namespace, d.Environment),
@@ -128,9 +142,16 @@ func (d *Deployment) Save() error {
 
 func ListDeploymentsAsJson(namespace string) ([][]byte, error) {
 	d := [][]byte{}
-
+	//_ = "breakpoint"
+	db, _ := GetBoltDb()
 	err := db.Conn.View(func(tx *bolt.Tx) error {
-		c := tx.Bucket([]byte(DeployBucketDbKey)).Cursor()
+		bucket := tx.Bucket([]byte(DeployBucketDbKey))
+		if bucket == nil {
+			// No deployments
+			return nil
+		}
+
+		c := bucket.Cursor()
 
 		prefix := []byte(fmt.Sprintf(DeployObjectListDbKeyFmt, namespace))
 
@@ -160,6 +181,11 @@ func ListDeployments(namespace string) ([]Deployment, error) {
 		if err != nil {
 			return nil, err
 		}
+
+		// Create the dynamic urls
+		d.Url = utils.ApiUrl(fmt.Sprintf("repos/%s/deployments/%d", namespace, d.Id))
+		d.StatusesUrl = fmt.Sprintf("%s/statuses", d.Url)
+
 		ds = append(ds, *d)
 	}
 	return ds, err

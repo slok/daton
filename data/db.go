@@ -40,7 +40,7 @@ const (
 
 var (
 	// Global connection
-	db *BoltDb = nil
+	globalDb *BoltDb = nil
 )
 
 // Bolt database will be the storage for the data
@@ -51,17 +51,17 @@ type BoltDb struct {
 
 // Returns a boltdb connection (if doesn't exists it creates)
 func GetBoltDb() (*BoltDb, error) {
-	if db == nil {
+	if globalDb == nil {
 		path := viper.GetString("BoltdbName")
 		bdb, err := newBoltDb(path)
 		if err != nil {
 			return nil, err
 		}
-		db = bdb
-		log.WithFields(log.Fields{"path": db.Path}).Info("New bolt database connection")
+		globalDb = bdb
+		log.WithFields(log.Fields{"path": globalDb.Path}).Info("New bolt database connection")
 	}
 
-	return db, nil
+	return globalDb, nil
 }
 
 func newBoltDb(path string) (*BoltDb, error) {
@@ -69,7 +69,7 @@ func newBoltDb(path string) (*BoltDb, error) {
 	// Connect
 	connection, err := bolt.Open(path, dbFileMode, nil)
 	if err != nil {
-		log.WithFields(log.Fields{"path": db.Path}).Errorf("Error connecting to bolt: %v", err)
+		log.WithFields(log.Fields{"path": globalDb.Path}).Errorf("Error connecting to bolt: %v", err)
 		return nil, err
 	}
 
@@ -89,13 +89,13 @@ func (b *BoltDb) Disconnect() error {
 		return nil
 	}
 	if b.Conn != nil {
-		log.WithFields(log.Fields{"path": db.Path}).Info("Disconnect bolt database")
+		log.WithFields(log.Fields{"path": globalDb.Path}).Info("Disconnect bolt database")
 		err := b.Conn.Close()
 		if err != nil {
-			log.WithFields(log.Fields{"path": db.Path}).Errorf("Error disconnecting to bolt: %v", err)
+			log.WithFields(log.Fields{"path": globalDb.Path}).Errorf("Error disconnecting to bolt: %v", err)
 			return err
 		}
-		db = nil
+		globalDb = nil
 	}
 	return nil
 }

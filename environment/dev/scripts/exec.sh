@@ -13,5 +13,6 @@ else
            --name $CONTAINER_NAME \
            -v $CURRENT_PATH/../../../:/go/src/github.com/slok/daton \
            -p 3000:3000 \
+           -p 6060:6060 \
            $IMAGE_NAME $@
 fi

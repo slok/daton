@@ -12,7 +12,14 @@ import (
 	"github.com/slok/daton/data"
 )
 
+//import _ "net/http/pprof"
+//import "net/http"
+
 func main() {
+	//	go func() {
+	//		log.Println(http.ListenAndServe("0.0.0.0:6060", nil))
+	//	}()
+
 	log.Info("Starting Daton...")
 
 	// Load configuration

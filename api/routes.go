@@ -27,11 +27,11 @@ func BindApiRoutes(router *mux.Router) *mux.Router {
 
 	// Deploy routes
 	s.HandleFunc("/repos/{owner}/{repo}/deployments", DeployListHandler).Methods("GET")
-	s.HandleFunc("/repos/{owner}/{repo}/deployments", DeploycreateHandler).Methods("POST")
+	s.HandleFunc("/repos/{owner}/{repo}/deployments", DeployCreateHandler).Methods("POST")
 
 	// Status routes
 	s.HandleFunc("/repos/{owner}/{repo}/deployments/{id}/statuses", StatusListHandler).Methods("GET")
-	s.HandleFunc("/repos/{owner}/{repo}/deployments/{id}/statuses", StatusCreatePingHandler).Methods("POST")
+	s.HandleFunc("/repos/{owner}/{repo}/deployments/{id}/statuses", StatusCreateHandler).Methods("POST")
 
 	return router
 }
