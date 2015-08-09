@@ -146,9 +146,19 @@ func (s *DeploymentsApiRoutesTestSuite) TestListDeployments(c *C) {
 	s.router.ServeHTTP(s.response, request)
 
 	c.Assert(s.response.Code, Equals, http.StatusOK)
-	body := s.response.Body.String()
-	ds, _ := json.Marshal(s.deployments)
-	c.Assert(body, Equals, string(ds))
+	body := s.response.Body.Bytes()
+
+	deploys := []data.Deployment{}
+	json.Unmarshal(body, &deploys)
+
+	c.Assert(len(deploys), Equals, len(s.deployments))
+
+	for k, i := range s.deployments {
+		c.Assert(deploys[k].Sha, Equals, i.Sha)
+		c.Assert(deploys[k].Ref, Equals, i.Ref)
+		c.Assert(deploys[k].Task, Equals, i.Task)
+		c.Assert(deploys[k].Environment, Equals, i.Environment)
+	}
 }
 
 func (s *DeploymentsApiRoutesTestSuite) TestCreateDeployments(c *C) {
