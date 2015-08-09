@@ -12,6 +12,7 @@ USER daton
 RUN go get github.com/tools/godep
 RUN go get golang.org/x/tools/cmd/cover
 RUN go get github.com/axw/gocov/gocov
+RUN go get github.com/mailgun/godebug
 
 # Install project dependencies
 COPY . /tmp/daton
